@@ -1,8 +1,8 @@
 {
-  "name": "meteor-webpack-react",
+  "name": "meteor-webpack-react-dlents",
   "version": "0.0.1",
   "description": "A port of simple-todos to Webpack/React on the frontend",
-  "repository": "https://www.github.com/jedwards1211/meteor-webpack-react",
+  "repository": "https://github.com/dlents/meteor-webpack-react",
   "devDependencies": {
     "babel": "^5.8.21",
     "babel-core": "^5.8.22",

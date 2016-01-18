@@ -1,5 +1,5 @@
 /* global Blaze */
-import React, {component} from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 
 export default class BlazeTemplate extends React.Component {

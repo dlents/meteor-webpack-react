@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOMServer from 'react-dom/server';
 import App from './components/App.jsx';
 import {Posts} from './collections';
 import {createPosts, createUsers} from './fixtures';
@@ -19,4 +20,4 @@ require('fs').readFile.call;
 
 console.log('\n\nRunning on server only');
 console.log('There are # posts:', Posts.find().fetch().length);
-console.log('React SSR:', React.renderToString(<App/>));
+console.log('React SSR:', ReactDOMServer.renderToString(<App/>));

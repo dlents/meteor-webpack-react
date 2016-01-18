@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './components/App.jsx';
 
 Accounts.ui.config({
-  passwordSignupFields: 'USERNAME_ONLY',
+  passwordSignupFields: 'EMAIL_ONLY',
 });
 
 console.log('Running on client only');
