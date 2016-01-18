@@ -3,3 +3,9 @@ node_modules
 npm-debug.log
 /webpack/lib
 .idea
+.DS_Store
+*.log
+lib
+coverage
+_book
+.sass-cache

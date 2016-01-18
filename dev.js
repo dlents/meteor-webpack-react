@@ -6,9 +6,11 @@ var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 var addProgressPlugin = require('./addProgressPlugin');
 var statsOptions = require('./statsOptions');
+var devProps = require(path.join(dirs.webpack, 'devProps'));
+var JSON5 = require('json5');
 
-var serverConfig = require(path.join(dirs.webpack, 'webpack.config.server.dev'));
-var clientConfig = require(path.join(dirs.webpack, 'webpack.config.client.dev'));
+var serverConfig = require(path.join(dirs.webpack, 'make-webpack-config'))(require(path.join(dirs.webpack, 'webpack.config.server.dev')));
+var clientConfig = require(path.join(dirs.webpack, 'make-webpack-config'))(require(path.join(dirs.webpack, 'webpack.config.client.dev')));
 
 if (!clientConfig.devServer) clientConfig.devServer = {};
 if (!clientConfig.devServer.stats) clientConfig.devServer.stats = statsOptions;
@@ -24,6 +26,10 @@ serverConfig.plugins.push(new webpack.BannerPlugin(
   'var require = Npm.require;\n',
   {raw: true}
 ));
+
+fs.writeFileSync(path.join(__dirname, 'server_config.json5'), JSON5.stringify(serverConfig, null, 2));
+fs.writeFileSync(path.join(__dirname, 'client_config.json5'), JSON5.stringify(clientConfig, null, 2));
+// process.exit();
 
 var serverBundlePath = path.join(dirs.assets, 'server.bundle.js');
 var serverBundleRequirePath = serverBundlePath.replace(/\\/g, '\\\\');
@@ -44,9 +50,9 @@ var serverBundleReady = false;
 
 serverCompiler.watch({
   progress: true,
-  colors: true,
-}, function(err, stats) {
-  console.log(stats.toString(statsOptions)) ;
+  colors: true
+}, function (err, stats) {
+  console.log(stats.toString(statsOptions));
   updateRequireServerBundleJs(stats);
   if (!serverBundleReady) {
     serverBundleReady = true;
@@ -59,14 +65,16 @@ function compileClient() {
   var clientCompiler = webpack(clientConfig);
   var clientDevServer = new WebpackDevServer(clientCompiler, clientConfig.devServer);
 
-  clientDevServer.listen(clientConfig.devServer.port, clientConfig.devServer.host, function() {});
+  clientDevServer.listen(clientConfig.devServer.port, clientConfig.devServer.host, function () {
+  });
 
   ln('-sf', loadClientBundleHtml, loadClientBundleLink);
 }
 
 function runMeteor() {
   cd(dirs.meteor);
-  exec('meteor --settings ../settings/devel.json', {async: true});
+  process.env.NODE_ENV = 'development';
+  exec('meteor --settings ../settings/devel.json --port ' + devProps.meteorPort, {async: true});
 }
 
 function updateRequireServerBundleJs(stats) {

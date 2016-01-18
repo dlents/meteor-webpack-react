@@ -1,4 +1,5 @@
 require('shelljs/global');
+
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = env.NODE_ENV = 'production';
 }
@@ -10,13 +11,18 @@ var webpack = require('webpack');
 var addProgressPlugin = require('./addProgressPlugin');
 var statsOptions = require('./statsOptions');
 
-var serverConfig = require(path.join(dirs.webpack, 'webpack.config.server.prod'));
-var clientConfig = require(path.join(dirs.webpack, 'webpack.config.client.prod'));
+var serverConfig = require(path.join(dirs.webpack, 'make-webpack-config'))(require(path.join(dirs.webpack, 'webpack.config.server.prod')));
+var clientConfig = require(path.join(dirs.webpack, 'make-webpack-config'))(require(path.join(dirs.webpack, 'webpack.config.client.prod')));
 
 addProgressPlugin(serverConfig);
 addProgressPlugin(clientConfig);
 
 serverConfig.plugins.push(new webpack.BannerPlugin('var require = Npm.require;\n', {raw: true}));
+
+//var JSON5 = require('json5');
+//fs.writeFileSync(path.join(__dirname, 'server_config.json5'), JSON5.stringify(serverConfig, null, 2));
+//fs.writeFileSync(path.join(__dirname, 'client_config.json5'), JSON5.stringify(clientConfig, null, 2));
+//process.exit();
 
 var serverBundlePath = path.join(dirs.assets, 'server.bundle.js');
 var clientBundlePath = path.join(dirs.assets, 'client.bundle.js');

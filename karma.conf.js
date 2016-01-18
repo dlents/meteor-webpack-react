@@ -31,7 +31,7 @@ module.exports = function (config) {
       module: { loaders: webpackConfig.module.loaders },
     },
     webpackMiddleware: {
-      noInfo: true
+      noInfo: true,
     }
   });
 };
