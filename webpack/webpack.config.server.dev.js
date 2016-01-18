@@ -1,10 +1,13 @@
-var webpack = require('webpack');
-var config = require('./webpack.config.server');
+//var webpack = require('webpack');
+var baseConfig = require('./webpack.config.server');
 var _ = require('lodash');
 
-var config = module.exports = _.assign(_.clone(config), {
+var config = {
   devtool: 'source-map',
-  output: _.assign(_.clone(config.output), {
-    pathinfo: true,
-  }),
-});
+  prerender: false,
+  output: _.assign(_.clone(baseConfig.output), {
+    pathinfo: true
+  })
+};
+
+module.exports = _.assign(_.clone(baseConfig), config);

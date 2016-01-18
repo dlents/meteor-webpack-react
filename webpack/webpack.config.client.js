@@ -1,37 +1,35 @@
 var path = require('path');
-var webpack = require('webpack');
-
+// var webpack = require('webpack');
+var context = __dirname;
 module.exports = {
+  loadStyles: true,
   context: __dirname,
+  prerender: false,
+  target: 'web',
   entry: [
-    './lib/core-js-no-number',
+    path.join(context, 'lib/core-js-no-number'),
     'regenerator/runtime',
-    '../app/main_client',
+    path.join(context, '../app/main_client')
   ],
   output: {
     path: path.join(__dirname, 'assets'),
     filename: 'client.bundle.js',
-    publicPath: '/assets/',
-  },
-  resolve: {
-    extensions: ['', '.js', '.jsx'],
-    root: path.join(__dirname, '../app'),
-  },
-  module: {
-    loaders: [
-      {
-        test: /\.jsx?$/,
-        loader: 'babel?stage=0',
-        exclude: /node_modules|lib/,
-      },
-      {
-        test: /\.css$/,
-        loader: 'style-loader!css-loader'
-      },
-    ],
-  },
-  plugins: [
-    new webpack.PrefetchPlugin("react"),
-    new webpack.PrefetchPlugin("react/lib/ReactComponentBrowserEnvironment")
-  ]
+    publicPath: '/assets/'
+  }
 };
+
+// When inside Redux repo, prefer src to compiled version.
+// You can safely delete these lines in your project.
+//var reduxSrc = path.join(__dirname, '..', '..', 'src')
+//var reduxNodeModules = path.join(__dirname, '..', '..', 'node_modules')
+//var fs = require('fs')
+//if (fs.existsSync(reduxSrc) && fs.existsSync(reduxNodeModules)) {
+//   // Resolve Redux to source
+//   module.exports.resolve = { alias: { 'redux': reduxSrc } }
+//   // Compile Redux from source
+//   module.exports.module.loaders.push({
+//      test: /\.js$/,
+//      loaders: [ 'babel' ],
+//      include: reduxSrc
+//   })
+//}
