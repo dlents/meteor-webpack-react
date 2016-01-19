@@ -7,5 +7,5 @@
 Meteor.methods({
   sayHello() {
     return 'Hello from Meteor method!';
-  },
+  }
 });

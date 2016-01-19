@@ -6,7 +6,7 @@ export function createPosts() {
   [1, 2, 3, 4].forEach(function(count) {
     Posts.insert({
       name: 'Test post # ' + count,
-      desc: 'How now brown cow',
+      desc: 'How now brown cow'
     });
   });
 }
@@ -17,7 +17,7 @@ export function createUsers() {
     Accounts.createUser({
       username: name,
       password: 'password',
-      profile: {},
+      profile: {}
     });
   });
 }

@@ -21,5 +21,11 @@ random
 ejson
 spacebars
 check
-mindfront:why-reminify
-thereactivestack:blazetoreact
+
+
+es5-shim
+react-runtime-dev
+react-runtime
+fourseven:scss
+httpstr:normalize.scss
+deanius:promise
