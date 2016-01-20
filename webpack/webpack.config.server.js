@@ -5,7 +5,6 @@ module.exports = {
   context: context,
   target: 'node',
   loadStyles: false,
-  prerender: false,
   entry: [
     path.join(context, './lib/core-js-no-number'),
     'regenerator/runtime',
@@ -15,5 +14,9 @@ module.exports = {
     path: path.join(__dirname, 'assets'),
     filename: 'server.bundle.js',
     publicPath: '/assets/'
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx'],
+    root: path.join(__dirname, '../app')
   }
 };

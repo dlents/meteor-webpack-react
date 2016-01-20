@@ -42,46 +42,19 @@ module.exports = function (options) {
     "html": "html-loader",
     "md|markdown": [ "html-loader", "markdown-loader" ]
   };
-  // var cssLoader = options.minimize ? "css-loader?module" : "css-loader?module&localIdentName=[path][name]---[local]---[hash:base64:5]";
-  var cssLoader = 'css-loader';
-  var stylesheetLoaderSets = {
-    iso: {
-      // "css": cssLoader,
+  var cssLoader = options.minimize ? "css-loader?module" : "css-loader?module&localIdentName=[path][name]---[local]---[hash:base64:5]";
+  // var cssLoader = 'css-loader';
+  var stylesheetLoaders = {
+      "css": cssLoader,
       "less": [ cssLoader, "less-loader" ],
       "styl": [ cssLoader, "stylus-loader" ],
-      "css|scss": [
-        'isomorphic-style-loader',
-        cssLoader + '?modules&localIdentName=[name]_[local]_[hash:base64:3]',
+      "scss|sass": [
+        //'isomorphic-style-loader',
+        cssLoader,
         'sass-loader',
         'postcss-loader'
       ]
-    },
-    reactCss: {
-      css: {
-        loader: ExtractTextPlugin.extract('style', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'),
-        include: [
-          rootPath
-        ],
-        exclude: [
-          /node_modules/,
-          /^.*?\b_.*\.s?css$/,
-          /^.+\.import\.s?css$/
-        ]
-      },
-      scss: {
-        loader: ExtractTextPlugin.extract('style', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass'),
-        include: [
-          rootPath
-        ],
-        exclude: [
-          /node_modules/,
-          /^.*?\b_.*\.s?css$/,
-          /^.+\.import\.s?css$/
-        ]
-      }
-    }
   };
-  var stylesheetLoaders = options.iso ? stylesheetLoaderSets.iso : stylesheetLoaderSets.reactCss;
 
   Object.keys(stylesheetLoaders).forEach(function (ext) {
     var stylesheetLoader = stylesheetLoaders[ ext ];
@@ -91,8 +64,8 @@ module.exports = function (options) {
     } else if (options.separateStylesheet) {
       stylesheetLoaders[ ext ] = ExtractTextPlugin.extract("style-loader", stylesheetLoader);
     } else {
-      // stylesheetLoaders[ext] = "style-loader!" + stylesheetLoader;
-      stylesheetLoaders[ ext ] = stylesheetLoader;
+      stylesheetLoaders[ext] = "style-loader!" + stylesheetLoader;
+      // stylesheetLoaders[ ext ] = stylesheetLoader;
     }
   });
 
@@ -125,9 +98,9 @@ module.exports = function (options) {
   var plugins = [
     new ExtractTextPlugin('app.css', {
       allChunks: true
-    })
-    //new webpack.PrefetchPlugin("../node_modules/react"),
-    //new webpack.PrefetchPlugin("../node_modules/react/lib/ReactComponentBrowserEnvironment")
+    }),
+    new webpack.PrefetchPlugin("react"),
+    new webpack.PrefetchPlugin("react/lib/ReactComponentBrowserEnvironment")
   ];
   if (options.prerender) {
     plugins.push(new StatsPlugin(path.join("./build", "stats.prerender.json"), {
@@ -138,7 +111,7 @@ module.exports = function (options) {
     aliasLoader[ "react-proxy-loader$" ] = "react-proxy-loader/unavailable";
     externals.push(
       /^react(\/.*)?$/,
-      /^reflux(\/.*)?$/,
+      /^redux(\/.*)?$/,
       "superagent",
       "async"
     );

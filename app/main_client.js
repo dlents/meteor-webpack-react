@@ -1,6 +1,7 @@
+import 'babel-polyfill'
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './components/App.jsx';
+import { render } from 'react-dom';
+import App from './components/App';
 
 Accounts.ui.config({
   passwordSignupFields: 'EMAIL_ONLY',
@@ -9,5 +10,5 @@ Accounts.ui.config({
 console.log('Running on client only');
 
 Meteor.startup(() => {
-  ReactDOM.render(<App/>, document.getElementById('root'));
+  render(<App/>, document.getElementById('app'));
 });

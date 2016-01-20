@@ -3,7 +3,7 @@ var baseConfig = require('./webpack.config.server');
 var _ = require('lodash');
 
 var config = {
-  devtool: 'source-map',
+  devtool: 'eval',
   prerender: false,
   output: _.assign(_.clone(baseConfig.output), {
     pathinfo: true

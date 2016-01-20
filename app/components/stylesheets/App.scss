@@ -1,6 +1,5 @@
 @import "../../stylesheets/variables";
 @import '../../stylesheets/base';
-// @import '../../stylesheets/main';
 
 .root {
   width: 100%;
@@ -10,12 +9,12 @@
 }
 
 .toolbar {
+  @extend %shadows;
   position: absolute;
   top: 0;
   width: 100%;
   @include topToolBar();
   @include setColors($color, adjust-hue($background, 180deg), $border);
-  @extend %shadows;
 }
 
 hr {
